@@ -18,6 +18,9 @@ add_action( 'wp_ajax_nopriv_redo_menu_order', 'reciprocity_redo_menu_order' );
 add_action( 'wp_ajax_list_add_ingredients', 'reciprocity_add_ingredients' );
 add_action( 'wp_ajax_nopriv_list_add_ingredients', 'reciprocity_add_ingredients' );
 
+add_action( 'wp_ajax_list_clear_meals', 'reciprocity_list_clear_meals' );
+add_action( 'wp_ajax_nopriv_list_clear_meals', 'reciprocity_list_clear_meals' );
+
 function reciprocity_update_list_item() {
 	$my_post = array(
 		'ID'           => $_POST['id'],
@@ -135,6 +138,26 @@ function reciprocity_update_list_item_publish() {
 	die();
 }
 
+function reciprocity_list_clear_meals() {
+	$postvars = array(
+		'ids' => $_POST['ids']
+	);
+	$ids = $postvars[ids];
+	var_dump($ids);
+	//die;
+	if (is_array($ids)) {
+		foreach ($ids as $id) {
+			$status = delete_post_meta( $id, 'meal_added' );
+			if ($status !== true) {
+				die('error');
+			}
+		}
+	}
+	$response = array(
+		'status' => true
+	);
+	die(json_encode( $response) );
+}
 
 add_action('wp_head', 'admin_url_is');
 function admin_url_is() { ?>

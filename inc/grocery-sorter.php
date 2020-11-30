@@ -20,7 +20,7 @@ function sort_groceries($post_ID) {
 			if (!empty($section->description)) {
 				$keywords = explode(',', $section->description);
 				foreach ($keywords as $keyword) {
-
+					
 					if(strstr($item,$keyword) == TRUE) {
 						$sectionID = array($section->term_id);
 						wp_set_post_terms( $post_ID, $sectionID, 'grocery_category' );

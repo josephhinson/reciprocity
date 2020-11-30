@@ -1,4 +1,4 @@
-jQuery(document).on("click", ".ast-button", function (event) {
+jQuery(document).on("click", ".ingredients-wrapper .ast-button", function (event) {
   event.preventDefault();
   var items = jQuery(".ingredients")
 	.find("li")
@@ -27,16 +27,17 @@ jQuery(document).on("click", '.grocery-list label', function() {
 	var thisLI = t.parents('li');
 	var tlist = t.parents('ul');
 	var theid = jQuery(this).attr('data-id');
+	var original_category = jQuery(this).data('category');
 	// check to see which "list" this item belongs to, if it's the "done list" set it as published
 	if (tlist.hasClass('done-list')) {
 		var data = {
 			action: 'list_set_publish',
-			id: theid,
+			id: theid
 		}
 		jQuery.post(ajaxurl, data, function(response) {
 			if (response == theid) {
 				thisLI.remove();
-				jQuery('.groc-list').prepend(thisLI).parents('.hidden-list').show();
+				jQuery('#'+original_category + ' .groc-list').prepend(thisLI).parents('.hidden-list').show();
 			} else {
 				alert(response);
 			}
@@ -103,6 +104,23 @@ jQuery(document).on("click", '.grocery-list li button', function() {
 		}
 	});
 });
+jQuery(document).on('click', '.meal-plans button', function(event) {
+	event.preventDefault();
+	var meal_ids = jQuery(this).data('ids');
+	console.log(meal_ids);
+	var data = {
+		action: 'list_clear_meals',
+		ids: meal_ids,
+	}
+	jQuery.post(ajaxurl, data, function(response) {
+		var responseData = JSON.parse(response);
+	   if (responseData.status == true) {
+			jQuery('.meal-plans').fadeOut('4000');
+		   //alert(responseData.message);
+	   } else {
+		}
+	});
+})
 
 function ajax_sorter(item_id, cat_id) {
 	var data = {
