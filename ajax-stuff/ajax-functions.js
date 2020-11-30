@@ -14,7 +14,10 @@ jQuery(document).on("click", ".ingredients-wrapper .ast-button", function (event
    jQuery.post(ajaxurl, data, function (response) {
 	   var responseData = JSON.parse(response);
 	   if (responseData.status == true) {
-		   alert(responseData.message);
+		jQuery('.ingredients-wrapper').before('<div class="ingredients-added">'+responseData.message+'</div>');
+		setTimeout(function(){
+			jQuery('.ingredients-added').fadeOut()
+		 }, 3000);
 	   }
     });
 });
@@ -113,9 +116,10 @@ jQuery(document).on('click', '.meal-plans button', function(event) {
 		ids: meal_ids,
 	}
 	jQuery.post(ajaxurl, data, function(response) {
-		var responseData = JSON.parse(response);
-	   if (responseData.status == true) {
-			jQuery('.meal-plans').fadeOut('4000');
+		//var responseData = JSON.parse(response);
+		console.log(response);
+	   if (response == 'true') {
+			jQuery('.meal-plans').fadeOut();
 		   //alert(responseData.message);
 	   } else {
 		}

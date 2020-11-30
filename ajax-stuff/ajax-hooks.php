@@ -143,20 +143,16 @@ function reciprocity_list_clear_meals() {
 		'ids' => $_POST['ids']
 	);
 	$ids = $postvars[ids];
-	var_dump($ids);
 	//die;
 	if (is_array($ids)) {
 		foreach ($ids as $id) {
 			$status = delete_post_meta( $id, 'meal_added' );
 			if ($status !== true) {
-				die('error');
+				die('Error');
 			}
 		}
 	}
-	$response = array(
-		'status' => true
-	);
-	die(json_encode( $response) );
+	die('true');
 }
 
 add_action('wp_head', 'admin_url_is');

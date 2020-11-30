@@ -8,7 +8,17 @@ function ra_ingredients_checklist($atts) {
         ob_start(); ?>
         <?php
         global $post;
-        $i_data = get_post_meta($post->ID, 'ingredients', true);
+		$i_data = get_post_meta($post->ID, 'ingredients', true);
+		?>
+		<style type="text/css">
+	.ingredients-added {	    
+		background: #efefef;
+		padding: 10px 20px;
+		display: block;
+		margin-bottom: 20px;
+		}
+	</style>
+	<?php
 					if ($i_data) {
 						echo '<div class="ingredients-wrapper">';
 						echo '<a href="#" data-id="'.$post->ID.'" class="ast-button"><i class="fa fa-plus"></i> ADD TO LIST</a>';
