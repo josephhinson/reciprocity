@@ -1,0 +1,164 @@
+.ingredients {
+    margin-left: 0;
+    padding-left: 0px;
+
+}
+.ingredients li {
+	cursor: pointer;
+    margin-bottom: 13px;
+    list-style:none;
+    &::before {
+        font-family: 'FontAwesome';
+        font-size: 18px;
+        margin-right: 7px;
+        content: '\f1db';
+        text-decoration: none !important;
+        font-style: normal !important;
+    }
+    &.checked {
+        color: #ccc;
+        &::before {
+            color: #79a079;
+            text-decoration: none;
+            font-style: normal;
+            content: '\f058';
+        }
+    }
+}
+.grocery-list {
+	ul {
+	    list-style: none;
+	    padding-left: 0px;
+	    margin-left: 0px;
+		li {
+			overflow:hidden;
+			list-style: none !important;
+			margin-right: 10%;
+			clear: both;
+			margin-bottom: 0px;
+		}
+		button {
+			width: 12%;
+			padding: 1% 0;
+		}
+		label {
+			input {
+				margin-top: 0px;
+			}
+			list-style: none !important;
+			margin-left: 0px;
+			border-bottom: 1px solid #DDD;
+			background: #fafafa;
+			font-size: 14px;
+			text-transform: uppercase;
+			float: left;
+			width: 84%;
+			padding: 1%;
+            margin-bottom: 4px;
+			box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.6);
+			border: 1px solid #ddd;
+			cursor: move;
+		}
+		.ui-state-highlight {
+			min-height: 30px;
+			margin-bottom:5px;
+		}
+	}
+	textarea {
+		width: 90%;
+	}
+}
+.btn-group form {
+    display: inline-block;
+}
+.ra_list {
+
+}
+.hidden-list {
+    display: none;
+}
+// Print Stylesheets
+@media print {
+    .header-wrap, .add_note, .cal_notes, .noprint {
+    	display: none;
+    }
+    .footer {
+    	font-size: 80%;
+    	padding-top:1em;
+    	border-top: 1px solid #ddd;
+    }
+    td {
+    	border: 1px solid #454545;
+    	height: 1in;
+    	width: .8in;
+    	vertical-align: top;
+    }
+    table{border-collapse:collapse;border-spacing:0;}
+    .calendar-nav {
+    	display: none;
+    }
+    body {
+    	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+    }
+    .calendar-date, th.day_name {
+    	font-size: x-small;
+    }
+    td p {
+    	font-size: 12px;
+    }
+    td p.meal-title a {
+    	text-decoration: none;
+    	color: #000;
+    }
+
+}
+// date picker:
+body input.picker {
+	width: 60px;
+	height:1px;
+	padding:0px;
+	border:none;
+}
+
+/* Calendar STyles */
+#calendar {
+	clear: both;
+}
+.calendar-content td {
+	border: 1px solid #ccc;
+	height: 95px;
+	width: 14.28%;
+	background: rgba(255,255,255,0.8);
+	vertical-align: top;
+}
+.day {
+	position: relative;
+	padding-top: 26px;
+	padding-left: 5px;
+}
+.day_name {
+	text-align: center;
+	font-size: 12px;
+	font-weight: normal;
+	padding: 10px 0 4px;
+}
+
+div.day p.meal-title a {
+	font-family: arial, sans-serif;
+	font-weight: normal;
+	font-size: 12px;
+}
+.calendar h3 {
+	float: left;
+}
+.calendar-date {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	font-size: 12px;
+}
+.calendar-nav {
+	padding-top: 10px;
+	font-size: 12px;
+	padding-bottom: 10px;
+}
