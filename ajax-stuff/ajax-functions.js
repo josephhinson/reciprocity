@@ -3,7 +3,7 @@ jQuery(document).on("click", ".ingredients-wrapper .ast-button", function (event
   var items = jQuery(".ingredients")
 	.find("li")
 	.text()
-    // we tred mapping this to an array and it didn't work.
+    // we tried mapping this to an array and it didn't work.
 
   var data = {
     action: "list_add_ingredients",

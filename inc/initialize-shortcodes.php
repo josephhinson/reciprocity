@@ -288,20 +288,6 @@ function ra_grocery_list($atts) {
 					background: #fafafa;
 					border: 1px dotted #ddd;
 				}
-				.meal-plans ul {
-					margin-left: 0px;
-					margin-top: 10px;
-					list-style: none;
-				}
-				.meal-plans li a {
-					display: block;
-					background: #fafafa;
-					padding: 5px 10px;
-					margin-bottom: 10px;
-					font-size: 18px;
-					font-weight: bold;
-					margin-bottom: 13px;
-				}
 				</style>
 				<script>
 				jQuery(document).ready(function() {
@@ -365,6 +351,22 @@ function ra_mealplan($atts) {
 	?>
 	<div class="meal-plans">
 	<h2>Meal Plan:</h2>
+	<style>
+	.meal-plans ul {
+		margin-left: 0px;
+		margin-top: 10px;
+		list-style: none;
+	}
+	.meal-plans li a {
+		display: block;
+		background: #fafafa;
+		padding: 5px 10px;
+		margin-bottom: 10px;
+		font-size: 18px;
+		font-weight: bold;
+		margin-bottom: 13px;
+	}
+	</style>
 	<ul>
 		<?php
 		foreach ($recipes as $recipe) { ?>

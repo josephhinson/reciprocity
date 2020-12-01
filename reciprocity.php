@@ -145,7 +145,7 @@ register_post_type( 'post', array(
        ) );
 }
 add_filter('menu_order','change_label');
-add_filter('custom_menu_order','order');
+//add_filter('custom_menu_order','order');
 function change_label($stuff)
 {
 	global $menu,$submenu;
