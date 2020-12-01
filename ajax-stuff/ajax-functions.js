@@ -14,10 +14,10 @@ jQuery(document).on("click", ".ingredients-wrapper .ast-button", function (event
    jQuery.post(ajaxurl, data, function (response) {
 	   var responseData = JSON.parse(response);
 	   if (responseData.status == true) {
-		jQuery('.ingredients-wrapper').before('<div class="ingredients-added">'+responseData.message+'</div>');
+		jQuery('.ingredients-wrapper').before('<div class="ingredients-added">'+responseData.message+' <span style="float:right"><a href="/list/">Visit List</a></span></div>');
 		setTimeout(function(){
 			jQuery('.ingredients-added').fadeOut()
-		 }, 3000);
+		 }, 10000);
 	   }
     });
 });

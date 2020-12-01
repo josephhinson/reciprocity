@@ -161,4 +161,4 @@ function admin_url_is() { ?>
 	    var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 	</script>
 <?php }
-wp_enqueue_script( 'reciprocity_ajax', RA_PLUGIN_URL .'/ajax-stuff/ajax-functions.js', 'jQuery', '1.0', true );
+wp_enqueue_script( 'reciprocity_ajax', RA_PLUGIN_URL .'/ajax-stuff/ajax-functions.js', 'jQuery', '1.2.1', true );
