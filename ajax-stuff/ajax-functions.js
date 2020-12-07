@@ -82,6 +82,7 @@ jQuery(document).on("click", '.grocery-list li button', function() {
 		}
 	});
 });
+
 jQuery(document).on('click', '.meal-plans button', function(event) {
 	event.preventDefault();
 	if (jQuery(this).data('action') == 'reset') {
@@ -90,22 +91,27 @@ jQuery(document).on('click', '.meal-plans button', function(event) {
 		var data = {
 			action: 'list_clear_meals',
 			ids: meal_ids,
+			uid: jQuery(this).data('uid'),
 		}
 	} else if ( jQuery(this).data('action') == 'delete' ) {
 		var meal_id = jQuery(this).data('id');
+		var user_id = jQuery(this).data('uid');
 		var data = {
 			action: 'list_delete_meal',
-			ids: meal_id,
+			id: meal_id,
+			uid: user_id
 		}
-		alert(meal_id);
 	}
 	jQuery.post(ajaxurl, data, function(response) {
 		//var responseData = JSON.parse(response);
 		console.log(response);
-	   if (response == 'true') {
+		if (response == 'true') {
 			jQuery('.meal-plans').fadeOut();
-		   //alert(responseData.message);
-	   } else {
+			//alert(responseData.message);
+		} else {
+			//alert(response);
+			jQuery('.meal-plans li[data-id='+response+']').hide();
+
 		}
 	});
 })

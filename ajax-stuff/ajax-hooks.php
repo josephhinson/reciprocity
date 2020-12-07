@@ -46,17 +46,13 @@ function reciprocity_add_ingredients() {
 	$uid = $_POST['uid'];
 	$key = 'meal_plan';
 	//var_dump($list);
-	//die();')
-	//update_post_meta( $pid, 'meal_added', true );
-	//update_post_meta($uid, 'meal_plan', );
-	$mealPlan = get_xuser_meta( $uid, $key, true );
-	if ( array_search($id, $mealPlan ) == false ) {
-		$mealPlan[] = $id;
-	}
-	update_user_meta($pid, $key, $mealPlan);
-
 	
-	$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
+	$mealPlan = (array)get_user_meta( $uid, $key, true );
+	if ( $array_key = array_search($pid, $mealPlan ) !== true ) {
+		$mealPlan[] = $pid;
+	}
+	$user_meta_update = update_user_meta($uid, $key, $mealPlan);
+
 	$itemcount = 1;
 	foreach($list as $items) {
 		
@@ -72,7 +68,8 @@ function reciprocity_add_ingredients() {
 	//echo 'true';
 	$response = array(
 		'status' => true,
-		'message' => $itemcount." items added to the list."
+		'message' => $itemcount." items added to the list.",
+		'user_meta_updated' => $user_meta_update
 
 	);
 	die(json_encode( $response) );
@@ -152,41 +149,46 @@ function reciprocity_update_list_item_publish() {
 }
 
 function reciprocity_list_clear_meals() {
-	$postvars = array(
-		'ids' => $_POST['ids'],
-		'uid' => $_POST['uid']
-	);
-	$ids = $postvars[ids];
-	//die;
-	if (is_array($ids)) {
-		foreach ($ids as $id) {
-			$status = delete_user_meta( $id, 'meal_plan' );
-			if ($status !== true) {
-				die('Error');
-			}
-		}
+	$ids = $_POST['ids'];
+	$uid = $_POST['uid'];
+
+	$status = delete_user_meta( $uid, 'meal_plan' );
+	
+	if (!$status) {
+		die('Error');
+	} else {
+		die('true');
 	}
-	die('true');
 }
 
 function reciprocity_list_delete_meal() {
-	$postvars = array(
-		'id' => $_POST['id'],
-		'uid' => $_POST['uid'],
-	);
-	$id = $postvars[$id];
-	$uid = $postvars[$uid];
+	$id = $_POST['id'];
+	$uid = $_POST['uid'];
+	//die($uid . ' - ' .$id);
 	$key = 'meal_plan';
 	$mealPlan = get_user_meta( $uid, $key, true );
-	if (($array_key = array_search($id, $mealPlan)) !== false) {
-		unset($mealPlan[$array_key]);
+	//$array_key = array_search( $id, $mealPlan, TRUE );
+	$keyCount = 0;
+	foreach($mealPlan as $mealID) {
+		if	(strcmp($id, $mealID) !== 0) {
+			//var_dump($mealID);
+			$array_key = $keyCount;
+			//die();
+			$deleted_id = $id;
+			
+		}
+		$keyCount++;
 	}
-	var_dump($mealPlan);
-	die;
-	
-	$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
-	
-	
+	if ( $array_key = array_search( $id, $mealPlan ) !== FALSE ) {
+		//die( $array_key );
+		unset( $mealPlan[ $array_key ] );
+	}
+	//$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
+	//var_dump($changedMealPlan);
+	$response = array();
+	$response['action'] = 'delete_meal';
+	$response['data'] = $id;
+	die( json_encode($response) );
 }
 
 
