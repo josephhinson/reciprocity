@@ -104,14 +104,16 @@ jQuery(document).on('click', '.meal-plans button', function(event) {
 	}
 	jQuery.post(ajaxurl, data, function(response) {
 		//var responseData = JSON.parse(response);
-		console.log(response);
-		if (response == 'true') {
-			jQuery('.meal-plans').fadeOut();
-			//alert(responseData.message);
-		} else {
-			//alert(response);
-			jQuery('.meal-plans li[data-id='+response+']').hide();
-
+		//console.log(response);
+		var responseData = JSON.parse(response);
+		if (responseData.action == 'reset') {
+			if (responseData.data == 'true') {
+				jQuery('.meal-plans').fadeOut();
+				//alert(responseData.message);
+			}
+		}
+		if (responseData.action == 'delete') { 
+			jQuery('.meal-plans li[data-id='+responseData.data+']').hide();	
 		}
 	});
 })

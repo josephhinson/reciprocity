@@ -153,7 +153,9 @@ function reciprocity_list_clear_meals() {
 	$uid = $_POST['uid'];
 
 	$status = delete_user_meta( $uid, 'meal_plan' );
-	
+	$response = array();
+	$response['data'] = $status;
+	$response['action'] = 'reset';
 	if (!$status) {
 		die('Error');
 	} else {
@@ -183,11 +185,13 @@ function reciprocity_list_delete_meal() {
 		//die( $array_key );
 		unset( $mealPlan[ $array_key ] );
 	}
-	//$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
+	$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
 	//var_dump($changedMealPlan);
 	$response = array();
-	$response['action'] = 'delete_meal';
-	$response['data'] = $id;
+	$response['action'] = 'delete';
+	if ($changedMealPlan) {
+		$response['data'] = $id;
+	}
 	die( json_encode($response) );
 }
 
