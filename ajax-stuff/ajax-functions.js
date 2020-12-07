@@ -8,7 +8,8 @@ jQuery(document).on("click", ".ingredients-wrapper .ast-button", function (event
   var data = {
     action: "list_add_ingredients",
     list: items,
-    pid: jQuery(".ast-button").data("id"),
+	pid: jQuery(".ast-button").data("id"),
+	uid: jQuery(".ast-button").data("uid"),
   }
   //return data;
    jQuery.post(ajaxurl, data, function (response) {
@@ -83,11 +84,20 @@ jQuery(document).on("click", '.grocery-list li button', function() {
 });
 jQuery(document).on('click', '.meal-plans button', function(event) {
 	event.preventDefault();
-	var meal_ids = jQuery(this).data('ids');
-	console.log(meal_ids);
-	var data = {
-		action: 'list_clear_meals',
-		ids: meal_ids,
+	if (jQuery(this).data('action') == 'reset') {
+		var meal_ids = jQuery(this).data('ids');
+		console.log(meal_ids);
+		var data = {
+			action: 'list_clear_meals',
+			ids: meal_ids,
+		}
+	} else if ( jQuery(this).data('action') == 'delete' ) {
+		var meal_id = jQuery(this).data('id');
+		var data = {
+			action: 'list_delete_meal',
+			ids: meal_id,
+		}
+		alert(meal_id);
 	}
 	jQuery.post(ajaxurl, data, function(response) {
 		//var responseData = JSON.parse(response);
@@ -99,6 +109,7 @@ jQuery(document).on('click', '.meal-plans button', function(event) {
 		}
 	});
 })
+
 
 function ajax_sorter(item_id, cat_id) {
 	var data = {

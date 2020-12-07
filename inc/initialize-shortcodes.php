@@ -4,7 +4,8 @@
 // [ra_ingredients]
 function ra_ingredients_checklist($atts) {
         extract(shortcode_atts(array(
-        ), $atts));
+		), $atts));
+		$current_user = wp_get_current_user();
         ob_start(); ?>
         <?php
         global $post;
@@ -21,7 +22,7 @@ function ra_ingredients_checklist($atts) {
 	<?php
 					if ($i_data) {
 						echo '<div class="ingredients-wrapper">';
-						echo '<a href="#" data-id="'.$post->ID.'" class="ast-button"><i class="fa fa-plus"></i> ADD TO LIST</a>';
+						echo '<a href="#" data-uid="'.$current_user->ID.'" data-id="'.$post->ID.'" class="ast-button"><i class="fa fa-plus"></i> ADD TO LIST</a>';
 						echo '<ul class="ingredients">';
 						$ingreds = explode("\n", $i_data);
 						foreach ($ingreds as $ingred) {
@@ -340,11 +341,22 @@ add_shortcode("ra_grocery_list", "ra_grocery_list");
 // end shortcode
 function ra_mealplan($atts) {
 	extract(shortcode_atts(array(), $atts));
+	global $current_user;
+	$meal_plan_ids = get_user_meta($current_user->ID, 'meal_plan', true);
+	//var_dump($meal_plan_ids);
+
 	$args = array(
 		'post_type'  => 'post',
-		'meta_key'   => 'meal_added',
+		'post__in' => $meal_plan_ids,
+		'orderby'=>'post__in',
+		//'meta_key'   => 'meal_added',
 	);
-	$recipes = get_posts($args);
+	if ($meal_plan_ids) {
+		$recipes = get_posts($args);
+	}
+
+	//echo $current_user->ID;
+	//die;
 	ob_start();
 	$r_ids = array();
 	if (!empty($recipes) ) {
@@ -381,7 +393,7 @@ function ra_mealplan($atts) {
 		foreach ($recipes as $recipe) { ?>
 			<li data-id=<?php echo $recipe->ID; ?>>
 				<a href="<?php the_permalink($recipe->ID); ?>"><?php echo $recipe->post_title; ?></a> 
-				<button data-action="delete" class="delete-but">-</button>
+				<button data-id="<?php echo $recipe->ID; ?>" data-uid="<?php echo $current_user->ID; ?>" data-action="delete" class="delete-but">-</button>
 			</li>
 		<?php $r_ids[] = $recipe->ID; ?>
 		<?php
@@ -389,7 +401,7 @@ function ra_mealplan($atts) {
 		?>
 		</ul>
 		<hr>
-		<button href="#" data-ids="<?php echo json_encode($r_ids); ?>" class="ast-button">Reset Meal Plan</button>
+		<button data-uid="<?php echo $current_user->ID; ?>" href="#" data-action="reset" data-ids="<?php echo json_encode($r_ids); ?>" class="ast-button">Reset Meal Plan</button>
 	</div>
 	<?php
 	} // end check for empty

@@ -21,6 +21,9 @@ add_action( 'wp_ajax_nopriv_list_add_ingredients', 'reciprocity_add_ingredients'
 add_action( 'wp_ajax_list_clear_meals', 'reciprocity_list_clear_meals' );
 add_action( 'wp_ajax_nopriv_list_clear_meals', 'reciprocity_list_clear_meals' );
 
+add_action( 'wp_ajax_list_delete_meal', 'reciprocity_list_delete_meal' );
+add_action( 'wp_ajax_nopriv_list_delete_meal', 'reciprocity_list_delete_meal' );
+
 function reciprocity_update_list_item() {
 	$my_post = array(
 		'ID'           => $_POST['id'],
@@ -40,9 +43,20 @@ function reciprocity_add_ingredients() {
 	$list = $_POST['list'];
 	$list = explode(PHP_EOL, $list);
 	$pid = $_POST['pid'];
+	$uid = $_POST['uid'];
+	$key = 'meal_plan';
 	//var_dump($list);
 	//die();')
-	update_post_meta( $pid, 'meal_added', true );
+	//update_post_meta( $pid, 'meal_added', true );
+	//update_post_meta($uid, 'meal_plan', );
+	$mealPlan = get_xuser_meta( $uid, $key, true );
+	if ( array_search($id, $mealPlan ) == false ) {
+		$mealPlan[] = $id;
+	}
+	update_user_meta($pid, $key, $mealPlan);
+
+	
+	$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
 	$itemcount = 1;
 	foreach($list as $items) {
 		
@@ -121,7 +135,6 @@ function reciprocity_update_menu_order() {
 }
 
 
-
 function reciprocity_update_list_item_publish() {
 	$my_post = array(
 	      'ID'           => $_POST['id'],
@@ -140,13 +153,14 @@ function reciprocity_update_list_item_publish() {
 
 function reciprocity_list_clear_meals() {
 	$postvars = array(
-		'ids' => $_POST['ids']
+		'ids' => $_POST['ids'],
+		'uid' => $_POST['uid']
 	);
 	$ids = $postvars[ids];
 	//die;
 	if (is_array($ids)) {
 		foreach ($ids as $id) {
-			$status = delete_post_meta( $id, 'meal_added' );
+			$status = delete_user_meta( $id, 'meal_plan' );
 			if ($status !== true) {
 				die('Error');
 			}
@@ -154,6 +168,27 @@ function reciprocity_list_clear_meals() {
 	}
 	die('true');
 }
+
+function reciprocity_list_delete_meal() {
+	$postvars = array(
+		'id' => $_POST['id'],
+		'uid' => $_POST['uid'],
+	);
+	$id = $postvars[$id];
+	$uid = $postvars[$uid];
+	$key = 'meal_plan';
+	$mealPlan = get_user_meta( $uid, $key, true );
+	if (($array_key = array_search($id, $mealPlan)) !== false) {
+		unset($mealPlan[$array_key]);
+	}
+	var_dump($mealPlan);
+	die;
+	
+	$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
+	
+	
+}
+
 
 add_action('wp_head', 'admin_url_is');
 function admin_url_is() { ?>
