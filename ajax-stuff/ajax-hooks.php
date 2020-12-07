@@ -170,7 +170,7 @@ function reciprocity_list_delete_meal() {
 	$key = 'meal_plan';
 	$mealPlan = get_user_meta( $uid, $key, true );
 	//$array_key = array_search( $id, $mealPlan, TRUE );
-	$keyCount = 0;
+	$keyCount = 1;
 	foreach($mealPlan as $mealID) {
 		if	(strcmp($id, $mealID) !== 0) {
 			//var_dump($mealID);
@@ -181,16 +181,18 @@ function reciprocity_list_delete_meal() {
 		}
 		$keyCount++;
 	}
-	if ( $array_key = array_search( $id, $mealPlan ) !== FALSE ) {
-		//die( $array_key );
+	print_r($mealPlan);
+	die($deleted_id . ' - ' . $array_key);
+	if ($array_key) {
 		unset( $mealPlan[ $array_key ] );
 	}
+
 	$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
 	//var_dump($changedMealPlan);
 	$response = array();
 	$response['action'] = 'delete';
 	if ($changedMealPlan) {
-		$response['data'] = $id;
+		$response['data'] = $deleted_id;
 	}
 	die( json_encode($response) );
 }
@@ -202,4 +204,4 @@ function admin_url_is() { ?>
 	    var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 	</script>
 <?php }
-wp_enqueue_script( 'reciprocity_ajax', RA_PLUGIN_URL .'/ajax-stuff/ajax-functions.js', 'jQuery', '1.2.1', true );
+wp_enqueue_script( 'reciprocity_ajax', RA_PLUGIN_URL .'/ajax-stuff/ajax-functions.js', 'jQuery', '1.2', true );
