@@ -357,7 +357,7 @@ function ra_mealplan($atts) {
 		margin-top: 10px;
 		list-style: none;
 	}
-	.meal-plans li a {
+	.meal-plans li {
 		display: block;
 		background: #fafafa;
 		padding: 5px 10px;
@@ -366,11 +366,23 @@ function ra_mealplan($atts) {
 		font-weight: bold;
 		margin-bottom: 13px;
 	}
+	button.delete-but {
+		padding: 0;
+		width: 25px;
+		height: 25px;
+		font-weight: bold;
+		display: inline-block;
+		line-height: 23px;
+		float: right;
+	}
 	</style>
 	<ul>
 		<?php
 		foreach ($recipes as $recipe) { ?>
-			<li data-id=<?php echo $recipe->ID; ?>><a href="<?php the_permalink($recipe->ID); ?>"><?php echo $recipe->post_title; ?></a></li>
+			<li data-id=<?php echo $recipe->ID; ?>>
+				<a href="<?php the_permalink($recipe->ID); ?>"><?php echo $recipe->post_title; ?></a> 
+				<button data-action="delete" class="delete-but">-</button>
+			</li>
 		<?php $r_ids[] = $recipe->ID; ?>
 		<?php
 		}

@@ -22,7 +22,6 @@ jQuery(document).on("click", ".ingredients-wrapper .ast-button", function (event
     });
 });
 
-
 // after clicking on one of the items in the "checked off list",
 // it will change the status to published, and put it back on the grocery list
 jQuery(document).on("click", '.grocery-list label', function() {
@@ -61,31 +60,6 @@ jQuery(document).on("click", '.grocery-list label', function() {
 		});
 	} //endif
 });
-// This isn't used right now since I removed the button
-// but it might be useful later, so I'm leaving it in for reference.
-jQuery(document).on("click", "button.reorder", function() {
- 	var saveData = {};
-	jQuery('.groc-list li').each(function() {
-		n = jQuery(this).index();
-		var i = jQuery(this).children('label').data('id');
-		saveData[n] = jQuery(this).children('label').data('id');
-
-	});
-	console.log(saveData);
-//	var serialized_data = jQuery.serialize(saveData);
-	var data = {
-		action: 'redo_menu_order',
-		items_to_reorder: saveData,
-	}
-	jQuery.post(ajaxurl, data, function(response) {
-//		if (response == 'Success') {
-//			alert("Order Updated");
-//		} else {
-//			alert(response);
-//		}
-	alert('List Order Updated!');
-	});
-} );
 
 jQuery(document).on("click", '.grocery-list li button', function() {
 	var t = jQuery(this);

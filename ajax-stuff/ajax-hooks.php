@@ -41,7 +41,7 @@ function reciprocity_add_ingredients() {
 	$list = explode(PHP_EOL, $list);
 	$pid = $_POST['pid'];
 	//var_dump($list);
-	//die();
+	//die();')
 	update_post_meta( $pid, 'meal_added', true );
 	$itemcount = 1;
 	foreach($list as $items) {
