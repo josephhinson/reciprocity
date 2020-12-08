@@ -103,13 +103,12 @@ jQuery(document).on('click', '.meal-plans button', function(event) {
 		}
 	}
 	jQuery.post(ajaxurl, data, function(response) {
-		//var responseData = JSON.parse(response);
-		//console.log(response);
-		var responseData = JSON.parse(response);
+		
+		var responseData = JSON.parse( response );
 		if (responseData.action == 'reset') {
-			if (responseData.data == 'true') {
+			if (responseData.data == true) {
 				jQuery('.meal-plans').fadeOut();
-				//alert(responseData.message);
+				
 			}
 		}
 		if (responseData.action == 'delete') { 
@@ -117,7 +116,6 @@ jQuery(document).on('click', '.meal-plans button', function(event) {
 		}
 	});
 })
-
 
 function ajax_sorter(item_id, cat_id) {
 	var data = {

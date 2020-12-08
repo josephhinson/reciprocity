@@ -113,9 +113,11 @@ add_shortcode("ra_add_recipe", "add_recipe");
 function ra_grocery_list($atts) {
 	extract(shortcode_atts(array(), $atts));
 	ob_start(); 
+	global $current_user;
 ?>
 					<?php
 					//$current_url = "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'];
+					$userid = $current_user->ID;
 					?>
 					<?php if (is_user_logged_in()): ?>
 						<div class="grocery-list">
@@ -175,8 +177,7 @@ function ra_grocery_list($atts) {
 									'field'    => 'term_id',
 									'terms'    => array( $section->term_id ),
 								),
-							),
-							'author' => $userid
+							)
 						);
 						$todos = get_posts($todoargs);
 						if	(!empty($todos)) { ?>

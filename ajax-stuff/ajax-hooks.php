@@ -46,14 +46,18 @@ function reciprocity_add_ingredients() {
 	$uid = $_POST['uid'];
 	$key = 'meal_plan';
 	//var_dump($list);
-	
-	$mealPlan = (array)get_user_meta( $uid, $key, true );
+	$pid = intval($pid);
+	$mealPlan = get_user_meta( $uid, $key, true );
+	if ( empty($mealPlan) ) {
+		$mealPlan = array();
+	}
 	if ( $array_key = array_search($pid, $mealPlan ) !== true ) {
 		$mealPlan[] = $pid;
 	}
+	//unset($mealPlan);
 	$user_meta_update = update_user_meta($uid, $key, $mealPlan);
 
-	$itemcount = 1;
+	$itemcount = 0;
 	foreach($list as $items) {
 		
 		$postargs = array(
@@ -154,13 +158,10 @@ function reciprocity_list_clear_meals() {
 
 	$status = delete_user_meta( $uid, 'meal_plan' );
 	$response = array();
+	//$response['data'] = $status;
 	$response['data'] = $status;
-	$response['action'] = 'reset';
-	if (!$status) {
-		die('Error');
-	} else {
-		die('true');
-	}
+	//$response['action'] = 'reset';
+	die(json_encode($response));
 }
 
 function reciprocity_list_delete_meal() {
@@ -168,10 +169,10 @@ function reciprocity_list_delete_meal() {
 	$uid = $_POST['uid'];
 	//die($uid . ' - ' .$id);
 	$key = 'meal_plan';
-	$mealPlan = get_user_meta( $uid, $key, true );
+	$mealPlan = (array)get_user_meta( $uid, $key, true );
 	//$array_key = array_search( $id, $mealPlan, TRUE );
-	$keyCount = 1;
-	foreach($mealPlan as $mealID) {
+
+/*	foreach($mealPlan as $mealID) {
 		if	(strcmp($id, $mealID) !== 0) {
 			//var_dump($mealID);
 			$array_key = $keyCount;
@@ -181,11 +182,21 @@ function reciprocity_list_delete_meal() {
 		}
 		$keyCount++;
 	}
-	print_r($mealPlan);
-	die($deleted_id . ' - ' . $array_key);
-	if ($array_key) {
+*/
+	$id = intval($id);
+	//var_dump($id);
+	//die();
+	$array_key = array_search($id, $mealPlan );
+	$deleted_id = $mealPlan[$array_key];
+	//var_dump($array_key);
+	//if ( $array_key ) {
 		unset( $mealPlan[ $array_key ] );
-	}
+	//}
+	//$deleted_id = $mealPlan[$array_key];
+	//die;
+	//array_search($id, $mealPlan);
+	//print_r($mealPlan);
+	//die($deleted_id . ' - ' . $array_key);
 
 	$changedMealPlan = update_user_meta( $uid, $key, $mealPlan );
 	//var_dump($changedMealPlan);
@@ -204,4 +215,4 @@ function admin_url_is() { ?>
 	    var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 	</script>
 <?php }
-wp_enqueue_script( 'reciprocity_ajax', RA_PLUGIN_URL .'/ajax-stuff/ajax-functions.js', 'jQuery', '1.2', true );
+wp_enqueue_script( 'reciprocity_ajax', RA_PLUGIN_URL .'/ajax-stuff/ajax-functions.js', 'jQuery', '1.2.2', true );
