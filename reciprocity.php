@@ -36,10 +36,10 @@ function checkUser($meal_id, $user_id) {
 /* Define the custom box */
 
 // WP 3.0+
-add_action('add_meta_boxes', 'reciprocity_meta_box');
+//add_action('add_meta_boxes', 'reciprocity_meta_box');
 
 /* Do something with the data entered */
-add_action('save_post', 'reciprocity_save_postdata');
+//add_action('save_post', 'reciprocity_save_postdata');
 
 /* Adds a box to the main column on the Post and Page edit screens */
 function reciprocity_meta_box() {
@@ -115,7 +115,7 @@ function reciprocity_save_postdata( $post_id ) {
 		update_post_meta($post_id, 'notes', $notes);
 }
 
-add_action('init','test_custom_post');
+//add_action('init','test_custom_post');
 function test_custom_post()
 {
 	$labels = array(
@@ -145,7 +145,7 @@ register_post_type( 'post', array(
        ) );
 }
 add_filter('menu_order','change_label');
-//add_filter('custom_menu_order','order');
+add_filter('custom_menu_order','order');
 function change_label($stuff)
 {
 	global $menu,$submenu;
