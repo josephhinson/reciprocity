@@ -33,117 +33,8 @@ function checkUser($meal_id, $user_id) {
 	}
 }
 
-/* Define the custom box */
-
-// WP 3.0+
-//add_action('add_meta_boxes', 'reciprocity_meta_box');
-
-/* Do something with the data entered */
-//add_action('save_post', 'reciprocity_save_postdata');
-
-/* Adds a box to the main column on the Post and Page edit screens */
-function reciprocity_meta_box() {
-    add_meta_box( 'reciprocity_sectionid', __( 'Meal Details', 'reciprocity_textdomain' ), 'reciprocity_inner_custom_box','post');
-}
-
-/* Prints the box content */
-function reciprocity_inner_custom_box() {
-
-  // Use nonce for verification
-  wp_nonce_field( plugin_basename(__FILE__), 'reciprocity_noncename' );
-
-	global $post;
-	$ingredients = get_post_meta($post->ID, 'ingredients', true);
-	$notes =  get_post_meta($post->ID, 'notes', true);
-
-  // The actual fields for data entry ?>
-<table border="0" cellspacing="5" cellpadding="5">
-	<tr><td style="width:150px;vertical-align: top;"><label for="ingredients">
-	      Ingredients
-	 </label></td>
-	<td><textarea name="ingredients" rows="8" cols="50"><?php echo $ingredients; ?></textarea></td>
-	</tr>
-	<tr>
-		<td style="width:150px;vertical-align: top;">
-			<label for="notes">
-	 			Notes
-	 		</label>
-		</td>
-		<td>
-			<textarea name="notes" rows="8" cols="50"><?php echo $notes; ?></textarea>
-		</td>
-	</tr>
-</table>
 
 
-<?php
-}
-
-/* When the post is saved, saves our custom data */
-function reciprocity_save_postdata( $post_id ) {
-
-  // verify this came from the our screen and with proper authorization,
-  // because save_post can be triggered at other times
-
-  if ( !wp_verify_nonce( $_POST['reciprocity_noncename'], plugin_basename(__FILE__) ) )
-      return $post_id;
-  // verify if this is an auto save routine.
-  // If it is our form has not been submitted, so we dont want to do anything
-  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
-      return $post_id;
-
-
-  // Check permissions
-  if ( 'post' == $_POST['post_type'] )
-  {
-    if ( !current_user_can( 'edit_page', $post_id ) )
-        return $post_id;
-  }
-  else
-  {
-    if ( !current_user_can( 'edit_post', $post_id ) )
-        return $post_id;
-  }
-
-  // OK, we're authenticated: we need to find and save the data
-
-  	$ingredients = $_POST['ingredients'];
-	$notes = $_POST['notes'];
-
-  // update the data
-		update_post_meta($post_id, 'ingredients', $ingredients);
-		update_post_meta($post_id, 'notes', $notes);
-}
-
-//add_action('init','test_custom_post');
-function test_custom_post()
-{
-	$labels = array(
-    'name' => _x('Recipes', 'post type general name'),
-    'singular_name' => _x('Recipe', 'post type singular name'),
-    'add_new' => _x('Add New', 'recipe'),
-    'add_new_item' => __('Add New Recipe'),
-    'edit_item' => __('Edit Recipe'),
-    'new_item' => __('New Recipe'),
-    'view_item' => __('View Recipe'),
-    'search_items' => __('Search Recipes'),
-    'not_found' =>  __('No recipes found'),
-    'not_found_in_trash' => __('No recipes found in Trash'),
-    'parent_item_colon' => ''
-  );
-
-register_post_type( 'post', array(
-			'labels' => $labels,
-           'public'  => true,
-          '_builtin' => true,
-          '_edit_link' => 'post.php?post=%d',
-           'capability_type' => 'post',
-            'hierarchical' => false,
-           'rewrite' => false,
-            'query_var' => false,
-           'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions' ),
-       ) );
-}
 add_filter('menu_order','change_label');
 add_filter('custom_menu_order','order');
 function change_label($stuff)
@@ -151,7 +42,7 @@ function change_label($stuff)
 	global $menu,$submenu;
 
 	$menu[5][0]= 'Recipes';
-	$submenu['edit.php'][5][0]  = 'Recipes';
+  $submenu['edit.php'][5][0]  = 'Recipes';
 return $stuff;
 }
 function order()
