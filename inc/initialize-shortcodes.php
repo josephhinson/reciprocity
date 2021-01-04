@@ -55,59 +55,6 @@ function ra_ingredients_checklist($atts) {
 add_shortcode("ra_ingredients", "ra_ingredients_checklist");
 // end shortcode
 
-// [ra_add_recipe]
-function add_recipe($atts) {
-        extract(shortcode_atts(array(), $atts));
-        $return = '';
-        ob_start();
-        ?>
-        <?php if(is_user_logged_in()) :  ?>
-            <?php if ($_GET['message']): ?>
-                <div class="alert alert-notice">
-                    <h4><?php echo urldecode($_GET['message']); ?></h4>
-                </div>
-            <?php endif; ?>
-				<div class="submit-form-block">
-					<form id="new_post" name="new_post" method="post" action="<?php echo(get_permalink($post->ID)); ?>" enctype="multipart/form-data">
-						<p>
-							<label for="title">Recipe Name</label><br /><input type="text" name="title" value="<?php echo $title; ?>" id="title" />
-						</p>
-						<p>
-							Category: <?php wp_dropdown_categories('show_count=1&hierarchical=1'); ?>
-						</p>
-						<p>
-							<label for="instructions">Instructions for Preparation</label><br /><textarea name="instructions" id="instructions"><?php echo $instructions; ?></textarea>
-						</p>
-						<p>
-							<label for="ingredients">Ingredients</label><br /><textarea name="ingredients" id="ingredients"><?php echo $ingredients; ?></textarea>
-						</p>
-						<p>
-							<label for="notes">Cook's Notes</label><br /><textarea name="notes" id="notes"><?php echo $notes; ?></textarea>
-						</p>
-						<h4>Add an image of your meal</h4>
-						<p>
-							<label for="image">Upload Image <small>(jpg, png or gif - less than 4mb)</small></label><br /><input type="file" size="40" name="image" value="" id="featured-thumb" />
-						</p>
-						<p>
-							<label for="image_url">OR... Enter Image URL <small>(e.g. http://flickr.com/abc)</small></label><br /><input type="text" name="image_url" value="<?php echo $image_url; ?>" id="image_url" />
-						</p>
-						<p style="margin-bottom: 0px;"><input type="submit" value="Submit Recipe"></p>
-						<input type="hidden" name="action" value="post" />
-                        <input type="hidden" name="new_recipe" value="true">
-						<?php wp_nonce_field( 'new-post' ); ?>
-					</form>
-				</div>
-				<?php else : ?>
-					<h3>Login to Add your recipe</h3>
-					<?php wp_login_form(); ?>
-				<?php endif; ?>
-            <?php
-            $return = ob_get_clean();
-        return $return;
-}
-add_shortcode("ra_add_recipe", "add_recipe");
-// end shortcode
-
 
 // [ra_grocery_list]
 function ra_grocery_list($atts) {
